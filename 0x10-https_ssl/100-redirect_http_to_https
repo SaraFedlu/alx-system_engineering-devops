@@ -34,14 +34,10 @@ frontend http_front
     bind *:80
     bind *:443 ssl crt /etc/haproxy/certs/www.sarahfed.tech.pem
     redirect scheme https code 301 if !{ ssl_fc }
+    default_backend myservers
 
-listen 48309-lb-01
-    bind *:80
-    mode http
-    stats enable
-    stats uri /haproxy?stats
+backend myservers
     balance roundrobin
-    option httpclose
     option forwardfor
     server 48309-web-01 18.207.112.239:80 check
     server 48309-web-02 54.175.179.200:80 check
