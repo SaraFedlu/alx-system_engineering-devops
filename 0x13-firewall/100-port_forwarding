@@ -1,0 +1,85 @@
+# rules before ufw command line added rules
+# these rules are evaluated before any rules added with ufw command
+# start by clearing existing rules and setting chains to default policy
+
+*nat
+:PREROUTING ACCEPT [0:0]
+-A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80
+COMMIT
+
+*filter
+:ufw-before-input - [0:0]
+:ufw-before-output - [0:0]
+:ufw-before-forward - [0:0]
+# End of nat table rules
+
+# Don't delete these required lines, otherwise there will be errors
+*filter
+:ufw-before-input - [0:0]
+:ufw-before-output - [0:0]
+:ufw-before-forward - [0:0]
+:ufw-not-local - [0:0]
+# End of filter table rules
+
+# allow all on loopback
+-A ufw-before-input -i lo -j ACCEPT
+-A ufw-before-output -o lo -j ACCEPT
+
+# quickly process packets for which we already have a connection
+-A ufw-before-input -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A ufw-before-output -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A ufw-before-forward -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# drop INVALID packets (logs these in loglevel medium and higher)
+-A ufw-before-input -m conntrack --ctstate INVALID -j ufw-logging-deny
+-A ufw-before-input -m conntrack --ctstate INVALID -j DROP
+
+# quickly process UNTRACKED packets
+-A ufw-before-input -m conntrack --ctstate UNTRACKED -j ACCEPT
+-A ufw-before-output -m conntrack --ctstate UNTRACKED -j ACCEPT
+-A ufw-before-forward -m conntrack --ctstate UNTRACKED -j ACCEPT
+
+# allow rules for LXC containers to work
+-A ufw-before-forward -d 169.254.0.0/16 -j DROP
+
+# drop traffic to localhost that does not originate from localhost
+-A ufw-before-input -m conntrack --ctstate NEW -i ! lo -d 127.0.0.0/8 -j DROP
+
+# allow dhcp client requests
+-A ufw-before-input -p udp --sport 67 --dport 68 -j ACCEPT
+
+# allow other types of ICMP traffic
+-A ufw-before-input -p icmp --icmp-type destination-unreachable -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type source-quench -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type time-exceeded -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type parameter-problem -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type echo-reply -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type timestamp-request -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type timestamp-reply -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type address-mask-request -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type address-mask-reply -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type router-solicitation -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type router-advertisement -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type neighbour-solicitation -j ACCEPT
+-A ufw-before-input -p icmp --icmp-type neighbour-advertisement -j ACCEPT
+
+# drop ufw-not-local packets
+-A ufw-before-input -m conntrack --ctstate NEW -j ufw-not-local
+
+# forward fragments
+-A ufw-before-forward -f -j ACCEPT
+
+# drop new packets that are fragments
+-A ufw-before-input -f -m conntrack --ctstate NEW -j DROP
+
+# all configurations of iptables rules that aren't "ufw" should go above this comment
+-A ufw-not-local -m addrtype --dst-type LOCAL -j RETURN
+-A ufw-not-local -m addrtype --dst-type MULTICAST -j RETURN
+-A ufw-not-local -m addrtype --dst-type BROADCAST -j RETURN
+-A ufw-not-local -j ufw-logging-deny
+-A ufw-not-local -j DROP
+
+# don't delete the 'COMMIT' line or these rules won't be processed
+COMMIT
+
