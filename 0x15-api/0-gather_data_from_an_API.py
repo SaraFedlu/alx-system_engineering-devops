@@ -3,22 +3,20 @@
 import requests
 import sys
 
-'''
- A python script that uses api to fetch
- information about an employee:
-    First line: Employee EMPLOYEE_NAME is done with
-    tasks(NUMBER_OF_DONE_TASKS/TOTAL_NUMBER_OF_TASKS):
-        EMPLOYEE_NAME: name of the employee
-        NUMBER_OF_DONE_TASKS: number of completed tasks
-        TOTAL_NUMBER_OF_TASKS: total number of tasks,
-        which is the sum of completed and non-completed tasks
-    Second and N next lines display the title of
-    completed tasks: TASK_TITLE (with 1 tabulation
-    and 1 space before the TASK_TITLE)
-'''
-
 
 def get_employee_todo_progress(employee_id):
+    """
+    Fetches and displays the TODO list progress for a given employee ID.
+    Exports the TODO list to a CSV file.
+
+    Args:
+        employee_id (int): The ID of the employee.
+
+    Raises:
+        requests.RequestException: If there is an error with the HTTP request.
+        KeyError: If expected data is missing in the API response.
+        Exception: For any other unexpected errors.
+    """
     try:
         # Fetch employee data
         user_response = requests.get(
@@ -51,6 +49,16 @@ def get_employee_todo_progress(employee_id):
 
 
 if __name__ == "__main__":
+    """
+    Main entry point of the script.
+
+    Expects a single command-line argument which is the employee ID.
+    Fetches and displays the TODO list progress of the specified employee and
+    exports the data to a CSV file.
+
+    Usage:
+        python script.py <employee_id>
+    """
     if len(sys.argv) != 2:
         print("Usage: python 0-gather_data_from_an_API.py <employee_id>")
         sys.exit(1)
