@@ -1,5 +1,15 @@
 #!/usr/bin/python3
+"""
+    Fetches and displays the TODO list progress for a given employee ID. 
 
+    Args:
+        employee_id (int): The ID of the employee.
+
+    Raises:
+        requests.RequestException: If there is an error with the HTTP request.
+        KeyError: If expected data is missing in the API response.
+        Exception: For any other unexpected errors.
+"""
 import requests
 import sys
 
