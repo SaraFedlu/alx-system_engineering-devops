@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-    Fetches and displays the TODO list progress for a given employee ID. 
+    Fetches and displays the TODO list progress for a given employee ID.
 
     Args:
         employee_id (int): The ID of the employee.
