@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-This module fetches and displays the TODO list progress for a given employee ID from JSONPlaceholder API.
+This module fetches and displays the TODO list
+progress for a given employee ID from JSONPlaceholder API.
 It also exports the TODO list to a CSV file.
 
 Usage:
