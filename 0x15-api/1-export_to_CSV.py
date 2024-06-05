@@ -1,5 +1,13 @@
 #!/usr/bin/python3
+"""
+This module fetches and displays the TODO list progress for a given employee ID from JSONPlaceholder API.
+It also exports the TODO list to a CSV file.
 
+Usage:
+    python script.py <employee_id>
+
+The script expects a single command-line argument which is the employee ID.
+"""
 import csv
 import requests
 import sys
