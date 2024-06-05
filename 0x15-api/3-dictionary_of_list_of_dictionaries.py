@@ -56,8 +56,6 @@ def fetch_all_employees_todo():
         with open(json_filename, 'w') as json_file:
             json.dump(todos_by_user, json_file, indent=4)
 
-        print(f"Data exported to {json_filename}")
-
     except requests.RequestException as e:
         print(f"An error occurred: {e}")
     except KeyError as e:
