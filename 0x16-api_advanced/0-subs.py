@@ -1,10 +1,26 @@
 #!/usr/bin/python3
+"""
+    Query the Reddit API and
+
+    Parameters:
+    subreddit (str): The name of the subreddit to query.
+
+    Return:
+        the number of subscribers for a given subreddit.
+"""
 import requests
 
 
 def number_of_subscribers(subreddit):
+
     """
-        Query the Reddit API and
+    Query the Reddit API
+
+    Parameters:
+    subreddit (str): The name of the subreddit to query.
+
+    Return:
+        the number of subscribers for a given subreddit.
         return the number of subscribers for a given subreddit.
     """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
