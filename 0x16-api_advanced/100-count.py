@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+"""
+    Recursively query the Reddit API,
+    parse titles of all hot articles,
+    and print a sorted count of given keywords.
+"""
 from collections import Counter
 import requests
 
