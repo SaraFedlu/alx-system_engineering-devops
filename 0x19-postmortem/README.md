@@ -1,5 +1,7 @@
 ### Post-Mortem: When a Tiny Typo Took Down WordPress
 
+![Demo](output.gif)
+
 #### Issue Summary
 
 **Duration**: The WordPress outage lasted for a solid 2 hours, from 14:00 to 16:00 UTC on June 18, 2024.
@@ -47,3 +49,5 @@ With these measures, we'll be better prepared to prevent similar issues in the f
 #### Lessons Learned: Typo Tyranny No More!
 
 In this adventure, a single typo caused massive disruption, but with quick thinking and teamwork, we conquered the typo monster and restored peace to our WordPress kingdom!
+
+![Demo](output2.gif)
