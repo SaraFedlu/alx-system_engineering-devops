@@ -43,10 +43,10 @@ file_line { 'pam_limits for common-session-noninteractive':
 }
 
 file_line { 'sysctl file-max setting':
-  ensure  => present,
-  path    => '/etc/sysctl.conf',
-  line    => 'fs.file-max = 2097152',
-  notify  => Exec['reload-sysctl'],
+  ensure => present,
+  path   => '/etc/sysctl.conf',
+  line   => 'fs.file-max = 2097152',
+  notify => Exec['reload-sysctl'],
 }
 
 exec { 'reload-sysctl':
